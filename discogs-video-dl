@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+if [ "$1" = "-r" ]; then
+  ruby get_urls.rb -r "$2"
+	ID_TYPE="release"
+elif [ "$1" = "-l" ]; then
+  ruby get_urls.rb -l "$2"
+	ID_TYPE="label"
+elif [ "$1" = "-a" ]; then
+  ruby get_urls.rb -a "$2"
+	ID_TYPE="artist"
+fi
+
+if [ $? -eq 1 ]; then
+  exit 1
+fi
+
+youtube-dl -iow -f best -o "$2/%(title)s.%(ext)s" -a "$ID_TYPE"_"$2"_urls
+
